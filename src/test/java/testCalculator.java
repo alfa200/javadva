@@ -16,7 +16,7 @@ public class testCalculator {
         assertEquals(Calculator.sum(1, 2), 3, 0);
         thrown.expect(InfiniteException.class);
         thrown.expectMessage("Результат не входит сторого в пределы double");
-        assertEquals(Calculator.subtract(Double.MAX_VALUE, 2), 0, 0);
+        Calculator.sum(Double.MAX_VALUE, 2);
     }
 
     @Test
@@ -24,7 +24,7 @@ public class testCalculator {
         assertEquals(Calculator.subtract(10, 2), 8, 0);
         thrown.expect(InfiniteException.class);
         thrown.expectMessage("Результат не входит сторого в пределы double");
-        assertEquals(Calculator.subtract(Double.MAX_VALUE, -2), 0, 0);
+        Calculator.subtract(Double.MAX_VALUE, -2);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class testCalculator {
         assertEquals(Calculator.multiply(10, 2), 20, 0);
         thrown.expect(InfiniteException.class);
         thrown.expectMessage("Результат не входит сторого в пределы double");
-        assertEquals(Calculator.multiply(Double.MAX_VALUE, 2), 0, 0);
+        Calculator.multiply(Double.MAX_VALUE, 2);
     }
 
     @Test()
