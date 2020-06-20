@@ -1,17 +1,16 @@
 package dvanol;
 
-public class BagOfSweets {
-    
+public abstract class Sweets {
     private String name;
     private double massa;
     private double price;
-    private String specialPart;
+    private String sName;
 
-    public BagOfSweets(String name, double mass, double price, String specialPart) {
+    public Sweets(String name, double massa, double price, String sName) {
         this.name = name;
-        this.massa = mass;
+        this.massa = massa;
         this.price = price;
-        this.specialPart = specialPart;
+        this.sName = sName;
     }
 
     public String getName() {
@@ -26,8 +25,8 @@ public class BagOfSweets {
         return price;
     }
 
-    public String getSpecialPart() {
-        return specialPart;
+    public String getsName() {
+        return sName;
     }
 
 }

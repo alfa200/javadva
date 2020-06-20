@@ -14,23 +14,32 @@ public class Main {
         int check = in.nextInt();
         //Калькулятор
         if (check == 1) {
-            //Ввести выражения для расчета и сохранить в массиве exp
-            String[] exp = Calculator.getInput();
-            DecimalFormat df = new DecimalFormat("#.####");
-            if (exp[1].equals("+")) {
-                double result = Calculator.sum(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
-                System.out.println(df.format(result));
-            } else if (exp[1].equals("-")) {
-                double result = Calculator.subtract(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
-                System.out.println(df.format(result));
-            } else if (exp[1].equals("*")) {
-                double result = Calculator.multiply(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
-                System.out.println(df.format(result));
-            } else if (exp[1].equals("/")) {
-                double result = Calculator.divide(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
-                System.out.println(df.format(result));
+            //Ввести выражения для расчета и сохранить в строку str
+            String str = Calculator.getInput();
+            //Проверить на удовлетворение шаблону
+            if (Calculator.checkString(str)) {
+                //Представить введеное выражение в виде массива
+                String[] exp = str.split(" ");
+                DecimalFormat df = new DecimalFormat("#.####");
+                try {
+                    if (exp[1].equals("+")) {
+                        double result = Calculator.sum(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
+                        System.out.println(df.format(result));
+                    } else if (exp[1].equals("-")) {
+                        double result = Calculator.subtract(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
+                        System.out.println(df.format(result));
+                    } else if (exp[1].equals("*")) {
+                        double result = Calculator.multiply(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
+                        System.out.println(df.format(result));
+                    } else if (exp[1].equals("/")) {
+                        double result = Calculator.divide(Double.valueOf(exp[0]), Double.valueOf(exp[2]));
+                        System.out.println(df.format(result));
+                    }
+                } catch (InfiniteException e) {
+                    System.out.println(e);
+                }
             } else {
-                System.out.println("Неизвестная операция!");
+                System.out.println("Введеное выражение не соответсвует формату!");
             }
             //Поиск максимального элемента в массиве. Для начала задать массив слов.
             //Размерность массива произвольна, задается в консоли.
@@ -46,8 +55,10 @@ public class Main {
             }
 
         } else if (check == 3) {
-            System.out.println("Заполните массив из 20 целых чисел значениями от -10 до 10 включительно");
-            ArrayList<Integer> mass = FillArrayAndSwitch.arrayFiller();
+            System.out.println("Массив заполнен 20 случайными значениями от -10 до 10 включительно");
+            ArrayList<Integer> mass = FillArrayAndSwitch.randomArrayFiller();
+            System.out.println(mass);
+            System.out.println("Массив после замены местами");
             System.out.println(FillArrayAndSwitch.findTwoNumbers(mass));
 
         } else if (check == 4) {
@@ -56,29 +67,18 @@ public class Main {
             // уникальный параметр. Необходимо собрать подарок из сладостей.
             // Найти общий вес подарка, общую стоимость подарка и вывести на
             // консоль информацию о всех сладостях в подарке.
-            System.out.println("Введите сколько сладостей в подарке");
-            int size = in.nextInt();
-            ArrayList<BagOfSweets> bag = new ArrayList<BagOfSweets>();
-            for (int i = 0; i < size; i++) {
-                System.out.println("Введите информацию в формате 'название,масса,стоимость,особенность'");
-                String[] description = in.next().split(",");
-                BagOfSweets bos = new BagOfSweets(description[0],
-                        Double.valueOf(description[1]), Double.valueOf(description[2]), description[3]);
-                bag.add(bos);
+            ArrayList<Sweets> bag = new ArrayList<Sweets>();
+            bag.add(new Jellybean("Jellybean1", 101, 1001, "цвет", "red"));
+            bag.add(new Jellybean("Jellybean2", 102, 1002, "цвет", "green"));
+            bag.add(new Jellybean("Jellybean3", 103, 1003, "цвет", "blue"));
+            bag.add(new Cookies("Cookies1", 201, 2001, "страна", "Russia"));
+            bag.add(new Cookies("Cookies2", 202, 2002, "страна", "USA"));
+            bag.add(new Candy("Candy1", 301, 3001, "вкус", "flavor of childhood"));
+            for (Sweets bs : bag) {
+                System.out.println(bs.toString());
             }
-            double masss = 0;
-            double price = 0;
-            //Посчитать массу и стоимость всего подарка
-            for (BagOfSweets bs : bag) {
-                masss += bs.getMassa();
-                price += bs.getPrice();
-            }
-            System.out.println("Информация о подарке:");
-            System.out.println("Масса подарка " + masss +" г");
-            System.out.println("Стоимость подарка " + price +" руб.");
-            for (BagOfSweets bs : bag) {
-                System.out.println(bs.getName() +" (" + bs.getSpecialPart() + ")");
-            }
+
+
         } else if (check == 5) {
             //Прочитать слова из файла.
             //Отсортировать в алфавитном порядке.
@@ -87,7 +87,14 @@ public class Main {
             //это слово и сколько раз оно встречается в файле
             ArrayList<String> array = ReadFromFile.readFromFile();
             Collections.sort(array);
+            System.out.println("Отсортированные в алфавитном порядке слова:");
+            System.out.println(array);
             Map<String, Integer> map = ReadFromFile.countWords(array);
+            System.out.println("Частота упоминания слов в файле в формате 'слово - количество упоминаний'");
+            for (Map.Entry<String, Integer> pair : map.entrySet()) {
+                System.out.println(pair.getKey() + " - " + pair.getValue());
+            }
+
             int max = 1;
             //Поиск максимального повтора
             for (Map.Entry<String, Integer> pair : map.entrySet()) {
@@ -103,6 +110,8 @@ public class Main {
                 }
             }
         } else {
+
+
             System.out.println("Неизвестная команда");
         }
     }
